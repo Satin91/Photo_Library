@@ -8,7 +8,9 @@
 import UIKit
 
 class LibraryView: UIView {
-    let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    
+    var content: [Content] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -17,13 +19,12 @@ class LibraryView: UIView {
         backgroundColor = .blue
     }
     
-    func addSubViews() {
-        addSubview(tableView)
+    func reloadPhotos() {
+        tableView.reloadData()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        print("Layout subviews")
+    private func addSubViews() {
+        addSubview(tableView)
     }
     
     private func setupTableView() {
@@ -37,6 +38,7 @@ class LibraryView: UIView {
         tableView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
     
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
@@ -44,12 +46,16 @@ class LibraryView: UIView {
 
 extension LibraryView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return content.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LibraryTableViewCell
-        cell.configure(text: String(indexPath.row), secondaryText: "Secondary text", image: "photo")
+        guard !content.isEmpty else { return cell }
+        let image = content[indexPath.row].image ?? "photo"
+        let name = content[indexPath.row].name
+        let id = content[indexPath.row].id
+        cell.configure(name: name, id: id, image: image)
         return cell
     }
     
@@ -66,10 +72,10 @@ class LibraryTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(text: String, secondaryText: String, image: String) {
+    func configure(name: String, id: Int, image: String) {
         var content = self.defaultContentConfiguration()
-        content.text = text
-        content.secondaryText = secondaryText
+        content.text = name
+        content.secondaryText = String(id)
         content.image = UIImage(systemName: image)
         self.contentConfiguration = content
     }
