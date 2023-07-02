@@ -1,5 +1,5 @@
 //
-//  LibraryView.swift
+//  LibraryTableView.swift
 //  photo_library
 //
 //  Created by Артур Кулик on 01.07.2023.
@@ -8,10 +8,10 @@
 import UIKit
 import Combine
 
-class LibraryView: UIView {
+class LibraryTableView: UIView {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
-    var content: [[Content]] = []
+    var content: [[LibraryPhotoModel]] = []
     var lastPage = PassthroughSubject<Int,Never>()
     
     override init(frame: CGRect) {
@@ -20,7 +20,7 @@ class LibraryView: UIView {
         setupTableView()
     }
     
-    func appendNew(content: [[Content]]) {
+    func appendNew(content: [[LibraryPhotoModel]]) {
         self.content = content
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -52,7 +52,7 @@ class LibraryView: UIView {
     }
 }
 
-extension LibraryView: UITableViewDelegate, UITableViewDataSource {
+extension LibraryTableView: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         content.count
     }
@@ -74,24 +74,5 @@ extension LibraryView: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row + 1 == content[indexPath.section].count && indexPath.section + 1 == content.count {
             lastPage.send(indexPath.section + 1)
         }
-    }
-}
-
-class LibraryTableViewCell: UITableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configure(name: String, id: Int, image: String?) {
-        var content = self.defaultContentConfiguration()
-        content.text = name
-        content.secondaryText = String(id)
-//        content.image = UIImage(urlString: image ?? "", placeholder: "photo")
-        content.image = UIImage(systemName: "photo")
-        self.contentConfiguration = content
     }
 }

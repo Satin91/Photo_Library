@@ -9,10 +9,11 @@ import Foundation
 import Combine
 
 class LibraryViewModel {
-    let networkService = NetworkService()
-    var content = CurrentValueSubject<[[Content]], Never>([])
-    var error = PassthroughSubject<NetworkError, Never>()
-    
+    let photoNetworkSerivce = PhotoNetworkService()
+    var content = CurrentValueSubject<[[LibraryPhotoModel]], Never>([])
+    var error = PassthroughSubject<Error, Never>()
+    @Published private(set) var text = ""
+    var subscriber = Set<AnyCancellable>()
     var pageForLoad: Int = 0
     
     init() {
@@ -25,13 +26,17 @@ class LibraryViewModel {
     }
     
     private func getPhotoTypes() {
-        Task {
-            do {
-                let photoTypes = try await networkService.loadPhotos(page: pageForLoad)
-                content.value.append(photoTypes.content)
-            } catch let error as NetworkError {
-                self.error.send(error)
+        photoNetworkSerivce.loadPhotos(page: pageForLoad)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    self.error.send(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { photos in
+                self.content.value.append(photos)
             }
-        }
+            .store(in: &subscriber)
     }
 }
