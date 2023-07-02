@@ -12,7 +12,7 @@ class LibraryTableView: UIView {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     var content: [[LibraryPhotoModel]] = []
-    var lastPage = PassthroughSubject<Int,Never>()
+    var lastPage = CurrentValueSubject<Int,Never>(0)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -12,7 +12,6 @@ class LibraryViewModel {
     let photoNetworkSerivce = PhotoNetworkService()
     var content = CurrentValueSubject<[[LibraryPhotoModel]], Never>([])
     var error = PassthroughSubject<Error, Never>()
-    @Published private(set) var text = ""
     var subscriber = Set<AnyCancellable>()
     var pageForLoad: Int = 0
     

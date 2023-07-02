@@ -9,20 +9,7 @@ import Foundation
 import Combine
 
 class NetworkManager {
-    let session = URLSession.shared
-//
-//    func sendRequest<T: Decodable>(request: URLRequest, model: T.Type) async throws -> T {
-//        let (data, response) = try await URLSession.shared.data(for: request)
-//        guard let httpResponse = response as? HTTPURLResponse,
-//              (200...299).contains(httpResponse.statusCode) else {
-//            throw NetworkError.badStatusCode
-//        }
-//
-//        guard let decodedValue = try? JSONDecoder().decode(model.self, from: data) else {
-//            throw NetworkError.wrongDecodingModel
-//        }
-//        return decodedValue
-//    }
+    private let session = URLSession.shared
     
     func sendRequest(request: URLRequest) -> AnyPublisher<Data, Error> {
         guard let url = request.url else {
@@ -37,10 +24,6 @@ class NetworkManager {
                 return element.data
             }
             .eraseToAnyPublisher()
-    }
-    
-    func observeNetworkConnection() {
-        
     }
 }
 
