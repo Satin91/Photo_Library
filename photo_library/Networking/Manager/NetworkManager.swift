@@ -12,7 +12,6 @@ class NetworkManager {
     
     func sendRequest<T: Decodable>(request: URLRequest, model: T.Type) async throws -> T {
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(data)
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
             throw URLError(.badURL)

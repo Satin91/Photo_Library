@@ -17,6 +17,7 @@ class LibraryViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         subscribeToParseContent()
+        subscribeTolastSection()
     }
     
     func subscribeToParseContent() {
@@ -26,6 +27,16 @@ class LibraryViewController: UIViewController {
                     self?.libraryView.content = content
                     self?.libraryView.reloadPhotos()
                 }
+            }
+            .store(in: &subscriber)
+    }
+    
+    func subscribeTolastSection() {
+        libraryView.lastPage
+            .sink { section in
+                guard section != 0 else { return }
+                self.viewModel.currentPage = section
+                self.viewModel.getPhotoTypes()
             }
             .store(in: &subscriber)
     }

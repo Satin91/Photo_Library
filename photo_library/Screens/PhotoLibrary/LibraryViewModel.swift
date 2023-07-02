@@ -10,7 +10,7 @@ import Combine
 
 class LibraryViewModel {
     let networkService = NetworkService()
-    var content = PassthroughSubject<[Content], Never>()
+    var content = CurrentValueSubject<[[Content]], Never>([])
     
     var currentPage: Int = 0
     
@@ -27,7 +27,8 @@ class LibraryViewModel {
         Task {
             do {
                 let photoTypes = try await networkService.getPhotoTypesRequest(page: currentPage)
-                content.send(photoTypes.content)
+                content.value.append(photoTypes.content)
+//                content.send(photoTypes.content)
             } catch let error {
                 print("Ошибка загрзки")
             }
