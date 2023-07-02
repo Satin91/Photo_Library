@@ -9,13 +9,12 @@ import UIKit
 import Combine
 
 class PhotoNetworkService {
-    let manager = NetworkManager()
-    var subscriber = Set<AnyCancellable>()
+    private let manager = NetworkManager()
+    private var subscriber = Set<AnyCancellable>()
     
     func loadPhotos(page: Int) -> AnyPublisher<[LibraryPhotoModel], Error> {
         let request = GetPhotoTypesRequest(page: page).make()
         return manager.sendRequest(request: request)
-            .print("retry")
             .decode(type: GetPhotoTypeResponse.self, decoder: JSONDecoder())
             .map { $0.content }
             .map { array -> [LibraryPhotoModel] in
@@ -27,11 +26,8 @@ class PhotoNetworkService {
     }
     
     private func convertToLibraryModel(element: Content) -> LibraryPhotoModel {
-        var model = LibraryPhotoModel(name: "", id: 0)
-        model.image = loadImage(urlString: element.image)
-        model.name = element.name
-        model.id = element.id
-        return model
+        let image = loadImage(urlString: element.image)
+        return LibraryPhotoModel(name: element.name, id: element.id, image: image)
     }
     
     private func loadImage(urlString: String?) -> UIImage? {
