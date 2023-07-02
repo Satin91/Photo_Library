@@ -34,9 +34,7 @@ class LibraryViewController: UIViewController {
     func subscribeTolastSection() {
         libraryView.lastPage
             .sink { section in
-                guard section != 0 else { return }
-                self.viewModel.currentPage = section
-                self.viewModel.getPhotoTypes()
+                self.viewModel.loadNextPage()
             }
             .store(in: &subscriber)
     }

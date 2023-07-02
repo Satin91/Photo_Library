@@ -12,7 +12,7 @@ class LibraryView: UIView {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     var content: [[Content]] = []
-    var lastPage = CurrentValueSubject<Int,Never>(0)
+    var lastPage = PassthroughSubject<Int,Never>()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,9 +64,8 @@ extension LibraryView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == content[indexPath.section].count && lastPage.value == indexPath.section {
-            lastPage.value += 1
-            print("last page did changed to \(lastPage.value)")
+        if indexPath.row + 1 == content[indexPath.section].count && indexPath.section + 1 == content.count {
+            lastPage.send(indexPath.section + 1)
         }
     }
 }

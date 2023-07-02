@@ -28,7 +28,6 @@ class LibraryViewModel {
             do {
                 let photoTypes = try await networkService.getPhotoTypesRequest(page: currentPage)
                 content.value.append(photoTypes.content)
-//                content.send(photoTypes.content)
             } catch let error {
                 print("Ошибка загрзки")
             }
