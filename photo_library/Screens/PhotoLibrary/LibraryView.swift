@@ -20,6 +20,13 @@ class LibraryView: UIView {
         setupTableView()
     }
     
+    func appendNew(content: [[Content]]) {
+        self.content = content
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     func reloadPhotos() {
         tableView.reloadData()
     }

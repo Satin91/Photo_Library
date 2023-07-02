@@ -10,7 +10,7 @@ import Foundation
 class NetworkService {
     let manager = NetworkManager()
     
-    func getPhotoTypesRequest(page: Int) async throws -> GetPhotoTypeResponse {
+    func loadPhotos(page: Int) async throws -> GetPhotoTypeResponse {
         let request = GetPhotoTypesRequest(page: page).make()
         let photoTypes = try await manager.sendRequest(request: request, model: GetPhotoTypeResponse.self)
         return photoTypes

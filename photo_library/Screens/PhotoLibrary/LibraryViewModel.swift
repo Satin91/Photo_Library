@@ -12,21 +12,21 @@ class LibraryViewModel {
     let networkService = NetworkService()
     var content = CurrentValueSubject<[[Content]], Never>([])
     
-    var currentPage: Int = 0
-    
+    var pageForLoad: Int = 0
+
     init() {
         getPhotoTypes()
     }
     
     func loadNextPage() {
-        currentPage += 1
+        pageForLoad += 1
         getPhotoTypes()
     }
     
-    func getPhotoTypes() {
+    private func getPhotoTypes() {
         Task {
             do {
-                let photoTypes = try await networkService.getPhotoTypesRequest(page: currentPage)
+                let photoTypes = try await networkService.loadPhotos(page: pageForLoad)
                 content.value.append(photoTypes.content)
             } catch let error {
                 print("Ошибка загрзки")

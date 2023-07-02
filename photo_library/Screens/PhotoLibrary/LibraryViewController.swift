@@ -23,17 +23,14 @@ class LibraryViewController: UIViewController {
     func subscribeToParseContent() {
         viewModel.content
             .sink { [weak self] content in
-                DispatchQueue.main.async {
-                    self?.libraryView.content = content
-                    self?.libraryView.reloadPhotos()
-                }
+                self?.libraryView.appendNew(content: content)
             }
             .store(in: &subscriber)
     }
     
     func subscribeTolastSection() {
         libraryView.lastPage
-            .sink { section in
+            .sink { _ in
                 self.viewModel.loadNextPage()
             }
             .store(in: &subscriber)
