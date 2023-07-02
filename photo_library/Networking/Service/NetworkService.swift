@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class NetworkService {
     let manager = NetworkManager()

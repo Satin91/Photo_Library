@@ -13,7 +13,6 @@ class NetworkManager {
     
     func sendRequest<T: Decodable>(request: URLRequest, model: T.Type) async throws -> T {
         let (data, response) = try await URLSession.shared.data(for: request)
-        
         guard let httpResponse = response as? HTTPURLResponse,
               (300...399).contains(httpResponse.statusCode) else {
             throw NetworkError.badStatusCode
@@ -23,6 +22,10 @@ class NetworkManager {
             throw NetworkError.wrongDecodingModel
         }
         return decodedValue
+    }
+    
+    func observeNetworkConnection() {
+        
     }
 }
 

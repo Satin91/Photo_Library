@@ -11,9 +11,10 @@ import Combine
 class LibraryViewModel {
     let networkService = NetworkService()
     var content = CurrentValueSubject<[[Content]], Never>([])
+    var error = PassthroughSubject<NetworkError, Never>()
     
     var pageForLoad: Int = 0
-
+    
     init() {
         getPhotoTypes()
     }
@@ -29,7 +30,7 @@ class LibraryViewModel {
                 let photoTypes = try await networkService.loadPhotos(page: pageForLoad)
                 content.value.append(photoTypes.content)
             } catch let error as NetworkError {
-                print(error)
+                self.error.send(error)
             }
         }
     }

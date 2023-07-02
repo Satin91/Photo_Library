@@ -19,11 +19,14 @@ class LibraryViewController: UIViewController {
         addObservers()
     }
     
+    /// Добавление всех подписчиков
     private func addObservers() {
         subscribeOnParseContent()
         subscribeOnlastSection()
+        errorHanding()
     }
     
+    /// Подписка на добавление новых страниц с фотографиями
     private func subscribeOnParseContent() {
         viewModel.content
             .sink { [weak self] content in
@@ -32,12 +35,21 @@ class LibraryViewController: UIViewController {
             .store(in: &subscriber)
     }
     
+    /// Подписка на добавление новой страницы
     private func subscribeOnlastSection() {
         libraryView.lastPage
             .sink { _ in
                 self.viewModel.loadNextPage()
             }
             .store(in: &subscriber)
+    }
+    
+    /// Подписка на присутствие ошибки
+    private func errorHanding() {
+        viewModel.error.sink { error in
+            self.showAlert(title: "Error", message: error.localizedDescription)
+        }
+        .store(in: &subscriber)
     }
 
     private func setupView() {
