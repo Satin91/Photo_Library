@@ -16,11 +16,15 @@ class LibraryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        subscribeToParseContent()
-        subscribeTolastSection()
+        addObservers()
     }
     
-    func subscribeToParseContent() {
+    private func addObservers() {
+        subscribeOnParseContent()
+        subscribeOnlastSection()
+    }
+    
+    private func subscribeOnParseContent() {
         viewModel.content
             .sink { [weak self] content in
                 self?.libraryView.appendNew(content: content)
@@ -28,14 +32,14 @@ class LibraryViewController: UIViewController {
             .store(in: &subscriber)
     }
     
-    func subscribeTolastSection() {
+    private func subscribeOnlastSection() {
         libraryView.lastPage
             .sink { _ in
                 self.viewModel.loadNextPage()
             }
             .store(in: &subscriber)
     }
-    
+
     private func setupView() {
         view.addSubview(libraryView)
         libraryView.frame = self.view.bounds

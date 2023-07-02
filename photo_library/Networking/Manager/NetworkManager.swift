@@ -6,21 +6,22 @@
 //
 
 import Foundation
+import Combine
 
 class NetworkManager {
     let session = URLSession.shared
     
     func sendRequest<T: Decodable>(request: URLRequest, model: T.Type) async throws -> T {
         let (data, response) = try await URLSession.shared.data(for: request)
+        
         guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
-            throw URLError(.badURL)
+              (300...399).contains(httpResponse.statusCode) else {
+            throw NetworkError.badStatusCode
         }
-
+        
         guard let decodedValue = try? JSONDecoder().decode(model.self, from: data) else {
-            throw URLError(.cancelled)
+            throw NetworkError.wrongDecodingModel
         }
-
         return decodedValue
     }
 }
