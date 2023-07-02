@@ -1,5 +1,5 @@
 //
-//  Endpoints.swift
+//  Endpoint.swift
 //  photo_library
 //
 //  Created by Артур Кулик on 01.07.2023.

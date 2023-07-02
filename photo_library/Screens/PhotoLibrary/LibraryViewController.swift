@@ -6,22 +6,31 @@
 //
 
 import UIKit
+import Combine
 
 class LibraryViewController: UIViewController {
+    let viewModel = LibraryViewModel()
     let libraryView = LibraryView(frame: .zero)
-    let networkService = NetworkService()
+    var subscriber = Set<AnyCancellable>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        Task {
-            let photoTypes = try await networkService.getPhotoTypesRequest(page: 0)
-            libraryView.content = photoTypes.content
-            libraryView.reloadPhotos()
-        }
+        subscribeToParseContent()
     }
     
-    func setupView() {
+    func subscribeToParseContent() {
+        viewModel.content
+            .sink { [weak self] content in
+                DispatchQueue.main.async {
+                    self?.libraryView.content = content
+                    self?.libraryView.reloadPhotos()
+                }
+            }
+            .store(in: &subscriber)
+    }
+    
+    private func setupView() {
         view.addSubview(libraryView)
         libraryView.frame = self.view.bounds
         libraryView.backgroundColor = .blue
