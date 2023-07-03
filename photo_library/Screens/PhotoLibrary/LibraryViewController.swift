@@ -11,6 +11,7 @@ import Combine
 class LibraryViewController: UIViewController {
     let viewModel = LibraryViewModel()
     let libraryTableView = LibraryTableView(frame: .zero)
+    let picker = ImagePickerManager()
     var subscriber = Set<AnyCancellable>()
     
     override func viewDidLoad() {
@@ -24,13 +25,14 @@ class LibraryViewController: UIViewController {
         subscribeOnParseContent()
         subscribeOnNextpage()
         subscribeOnError()
+        subscribeToTypeTap()
     }
     
     /// Подписка на добавление новых страниц с фотографиями
     private func subscribeOnParseContent() {
         viewModel.content
-            .sink { [weak self] content in
-                self?.libraryTableView.appendNew(content: content)
+            .sink { content in
+                self.libraryTableView.appendNew(content: content)
             }
             .store(in: &subscriber)
     }
@@ -51,6 +53,16 @@ class LibraryViewController: UIViewController {
         }
         .store(in: &subscriber)
     }
+    
+    private func subscribeToTypeTap() {
+        libraryTableView.selectedIndex
+            .sink { indeces in
+                self.present(self.picker.pickerController, animated: true)
+            }
+            .store(in: &subscriber)
+    }
+    
+    
 
     private func setupView() {
         view.addSubview(libraryTableView)

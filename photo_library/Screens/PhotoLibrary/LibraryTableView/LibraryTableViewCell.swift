@@ -22,7 +22,7 @@ class LibraryTableViewCell: UITableViewCell {
         var content = self.defaultContentConfiguration()
         content.text = name
         content.secondaryText = String(id)
-        content.imageProperties.maximumSize = CGSize(width: 60, height: 60)
+        content.imageProperties.maximumSize = CGSize(width: 45, height: 45)
         content.imageProperties.cornerRadius = 2
         let photoImage = image ?? UIImage(named: "placeholder")
         content.image = photoImage

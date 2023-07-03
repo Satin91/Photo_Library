@@ -19,8 +19,7 @@ struct GetPhotoTypesRequest: NetworkRequestProtocol {
     }
     
     func make() -> RequestModel {
-        let path = Endpoint.getPhotoTypes.rawValue.appendingQueryParameters(parameters)
         let headers = header.merging(header) { $1 }
-        return RequestModel(path: path, headers: HTTPHeaders(headers), method: .get)
+        return RequestModel(path: .getPhotoTypes, parameters: parameters, headers: HTTPHeaders(headers), method: .get)
     }
 }

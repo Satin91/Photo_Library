@@ -6,29 +6,26 @@
 //
 
 import Foundation
+import Alamofire
 
-struct UploadPhotoRequest {
-    var name: String
-    var photo: Data
-    var typeId: String
+struct UploadPhotoRequest: NetworkRequestProtocol {
     
-    init(name: String, photo: Data, typeId: String) {
-        self.name = name
-        self.photo = photo
-        self.typeId = typeId
+    var parameters: [String: String]
+    var header: [String: String]
+    var body: [String: Any]
+    
+    init(name: String, typeId: Int, imageName: String, photo: Data) {
+        parameters = [
+            "name": name,
+            "typeId": String(typeId),
+        ]
+        header = ["Content-Type": "multipart/form-data"]
+        body = ["\(imageName)": photo]
     }
     
-    func make() -> URLRequest {
-        var URL = URL(string: "https://junior.balinasoft.com/api/v2/photo")
-        let URLParams = [
-            "name": name,
-            "typeId": typeId,
-        ]
-        var request = URLRequest(url: URL!)
-        request.addValue("*/*", forHTTPHeaderField: "Accept")
-        request.addValue("multipart/form-data", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "HEAD"
-        request.httpBody = photo
-        return request
+    func make() -> RequestModel {
+        let headers = header.merging(header) { $1 }
+        return RequestModel(path: .uploadPhoto, parameters: parameters, body: body, headers: HTTPHeaders(headers), method: .post)
     }
 }
+

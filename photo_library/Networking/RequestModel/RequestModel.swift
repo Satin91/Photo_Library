@@ -19,20 +19,23 @@ protocol NetworkRequestProtocol {
 // рeaders, baseURL, encoding,  объявлены геттерами для улучшения читаемости. В реальном проекте, они были бы обычными глобальными свойствами.
 struct RequestModel {
     var path: String
-    var parameters: [String : Any]?
+    var body: [String : Any]?
     var method: Alamofire.HTTPMethod
     var headers: HTTPHeaders
     
-    var baseUrl: String {
+    var host: String {
         Constats.API.libraryHost
     }
     var encoding: ParameterEncoding {
         JSONEncoding.default
     }
+    var fullPath: String {
+        host + path
+    }
     
-    init(path: String, parameters: [String: Any]? = nil, headers: HTTPHeaders = HTTPHeaders(), method: Alamofire.HTTPMethod = .get) {
-        self.path = path
-        self.parameters = parameters
+    init(path: Endpoint, parameters: [String: String] = [:], body: [String: Any]? = nil, headers: HTTPHeaders = HTTPHeaders(), method: Alamofire.HTTPMethod = .get) {
+        self.path = path.rawValue.appendingQueryParameters(parameters)
+        self.body = body
         self.method = method
         self.headers = headers
     }

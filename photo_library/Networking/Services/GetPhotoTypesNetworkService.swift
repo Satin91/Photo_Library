@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import Alamofire
 
 class GetPhotoTypesNetworkService {
     private let manager = NetworkManager()

@@ -19,14 +19,18 @@ class LibraryViewModel {
     
     init() {
         getPhotoTypes()
-        let image = UIImage(named: "placeholder")!
-        let data = image.jpegData(compressionQuality: 1)!
-//        sendPhotoService.uploadPhoto(name: "name", id: 26, photo: data)
+        uploadPhoto()
     }
     
     func loadNextPage() {
         pageForLoad += 1
         getPhotoTypes()
+    }
+    
+    func uploadPhoto() {
+        let image = UIImage(named: "placeholder")!
+        let imageData = image.jpegData(compressionQuality: 0.2)!
+        sendPhotoService.uploadPhoto(name: "some_name", id: 26, imageName: "", photo: imageData)
     }
     
     private func getPhotoTypes() {

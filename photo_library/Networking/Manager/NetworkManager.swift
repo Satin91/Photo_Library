@@ -12,38 +12,28 @@ import Alamofire
 class NetworkManager {
     private let session = Session.default
     
+    func uploadPhoto(data: Data, request: NetworkRequestProtocol) {
+        let request = request.make()
+        AF.upload(multipartFormData: { multipartFormData in
+            multipartFormData.append(data, withName: "photo" , fileName: "placeholder")
+        },
+                  to: request.fullPath, method: .post)
+        .response { resp in
+            print(String(data: resp.data!, encoding: .utf8) )
+        }
+    }
+    
     func sendRequest(request: NetworkRequestProtocol) -> AnyPublisher<Data, Error> {
         let request = request.make()
-        return session.request(request.baseUrl + request.path, method: request.method, parameters: request.parameters, encoding: request.encoding, headers: request.headers).publishData()
+        return session.request(request.fullPath, method: request.method, parameters: request.body, encoding: request.encoding, headers: request.headers).publishData()
             .tryMap { response -> Data in
                 switch response.result {
                 case .success(let data):
-                    let serialize = try! JSONSerialization.jsonObject(with: data)
-                    print("Response data \(serialize)")
                     return data
                 case .failure(let error):
-                    print("Response error \(error)")
                     throw error
                 }
             }
             .eraseToAnyPublisher()
     }
 }
-
-
-
-//    func sendRequest(request: URLRequest) -> AnyPublisher<Data, Error> {
-//        guard let url = request.url else {
-//            return Fail(error: URLError(.badURL)).eraseToAnyPublisher()
-//        }
-//        return session.dataTaskPublisher(for: url)
-//            .tryMap { element -> Data in
-////                guard let httpResponse = element.response as? HTTPURLResponse,
-////                      httpResponse.statusCode == 200 else {
-////                    throw NetworkError.badStatusCode
-////                }
-//                return element.data
-//            }
-//            .eraseToAnyPublisher()
-//    }
-//

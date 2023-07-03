@@ -13,6 +13,7 @@ class LibraryTableView: UIView {
     
     var content: [[LibraryPhotoModel]] = []
     var lastPage = CurrentValueSubject<Int,Never>(0)
+    var selectedIndex = PassthroughSubject<[Int],Never>()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,6 +69,10 @@ extension LibraryTableView: UITableViewDelegate, UITableViewDataSource {
         let id = content[indexPath.section][indexPath.row].id
         cell.configure(name: name, id: id, image: image)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.selectedIndex.send([indexPath.section, indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
