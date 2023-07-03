@@ -10,8 +10,7 @@ import Combine
 import UIKit
 
 class LibraryViewModel {
-    let photoNetworkSerivce = GetPhotoTypesNetworkService()
-    let sendPhotoService = UploadPhotoTypeNetworkService()
+    let networkService = NetworkService()
     var content = CurrentValueSubject<[[LibraryPhotoModel]], Never>([])
     var error = PassthroughSubject<Error, Never>()
     var subscriber = Set<AnyCancellable>()
@@ -28,12 +27,24 @@ class LibraryViewModel {
     }
     
     func uploadPhoto(photo: PickerModel) {
-        let selectedType = content.value[selectedTypeIndex[0]][selectedTypeIndex[1]]
-        sendPhotoService.uploadPhoto(name: "Кулик Артур Сергеевич", id: selectedType.id, imageName: photo.imageName, image: photo.image)
+        let selectedType = content.value[selectedTypeIndex]
+        networkService.uploadPhoto(name: "Кулик Артур Сергеевич", id: selectedType.id, imageName: photo.imageName, image: photo.image)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    self.error.send(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { [self] success in
+                content.value[selectedTypeIndex].image = UIImage(data: photo.image)
+            }
+            .store(in: &subscriber)
+
     }
     
     private func getPhotoTypes() {
-        photoNetworkSerivce.loadPhotos(page: pageForLoad)
+        networkService.loadPhotos(page: pageForLoad)
             .sink { completion in
                 switch completion {
                 case .failure(let error):

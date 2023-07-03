@@ -7,8 +7,9 @@
 
 import UIKit
 import Combine
+import Alamofire
 
-class GetPhotoTypesNetworkService {
+class NetworkService {
     private let manager = NetworkManager()
     private var subscriber = Set<AnyCancellable>()
     
@@ -36,5 +37,10 @@ class GetPhotoTypesNetworkService {
         }
         let imageData = try? Data(contentsOf: url)
         return UIImage(data: imageData ?? Data())
+    }
+    
+    func uploadPhoto(name: String, id: Int, imageName: String, image: Data) -> Future<Bool, AFError> {
+        let request = UploadPhotoRequest(name: name, typeId: id, imageName: imageName, photo: image)
+        return manager.uploadPhoto(data: image, name: imageName, request: request)
     }
 }

@@ -9,12 +9,12 @@ import UIKit
 import Combine
 
 class ImagePickerManager: NSObject {
-    let pickerController = UIImagePickerController()
+    let controller = UIImagePickerController()
     var selectedImage = PassthroughSubject<PickerModel, Never>()
     
     override init() {
         super.init()
-        pickerController.delegate = self
+        controller.delegate = self
     }
 }
 
@@ -26,6 +26,6 @@ extension ImagePickerManager: UINavigationControllerDelegate, UIImagePickerContr
         let name = imagePath.lastPathComponent
         let photo = PickerModel(image: imageData, imageName: name)
         selectedImage.send(photo)
-        pickerController.dismiss(animated: true)
+        controller.dismiss(animated: true)
     }
 }

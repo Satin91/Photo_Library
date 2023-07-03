@@ -60,7 +60,7 @@ class LibraryViewController: UIViewController {
         libraryTableView.selectedIndex
             .sink { indeces in
                 self.viewModel.selectedTypeIndex = indeces
-                self.present(self.picker.pickerController, animated: true)
+                self.present(self.picker.controller, animated: true)
             }
             .store(in: &subscriber)
     }
@@ -68,7 +68,6 @@ class LibraryViewController: UIViewController {
     private func onPickImage() {
         picker.selectedImage
             .sink { photo in
-                print(photo)
                 self.viewModel.uploadPhoto(photo: photo)
             }
             .store(in: &subscriber)

@@ -12,14 +12,20 @@ import Alamofire
 class NetworkManager {
     private let session = Session.default
     
-    func uploadPhoto(data: Data, request: NetworkRequestProtocol) {
-        let request = request.make()
-        AF.upload(multipartFormData: { multipartFormData in
-            multipartFormData.append(data, withName: "photo" , fileName: "placeholder")
-        },
-                  to: request.fullPath, method: .post)
-        .response { resp in
-            print(String(data: resp.data!, encoding: .utf8) )
+    func uploadPhoto(data: Data, name: String, request: NetworkRequestProtocol) -> Future<Bool, AFError>{
+        Future { promise in
+            let request = request.make()
+            AF.upload(multipartFormData: { multipartFormData in
+                multipartFormData.append(data, withName: "photo" , fileName: name)
+            },
+                      to: request.fullPath, method: .post)
+            .response { resp in
+                if resp.data != nil {
+                    promise(.success(true))
+                } else {
+                    promise(.failure(resp.error!))
+                }
+            }
         }
     }
     
