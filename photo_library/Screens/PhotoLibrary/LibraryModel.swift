@@ -7,13 +7,13 @@
 
 import UIKit
 
-struct LibraryPhotoModel {
+struct PhotoTypeModel {
     var name: String
     var id: Int
     var image: UIImage?
 }
 
-struct PickerModel {
+struct PhotoUploadModel {
     var image: Data
     var imageName: String
 }

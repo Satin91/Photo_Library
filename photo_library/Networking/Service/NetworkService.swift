@@ -13,12 +13,12 @@ class NetworkService {
     private let manager = NetworkManager()
     private var subscriber = Set<AnyCancellable>()
     
-    func loadPhotos(page: Int) -> AnyPublisher<[LibraryPhotoModel], Error> {
+    func loadPhotoTypes(from page: Int) -> AnyPublisher<[PhotoTypeModel], Error> {
         let request = GetPhotoTypesRequest(page: page)
         return manager.sendRequest(request: request)
             .decode(type: GetPhotoTypeResponse.self, decoder: JSONDecoder())
             .map { $0.content }
-            .map { array -> [LibraryPhotoModel] in
+            .map { array -> [PhotoTypeModel] in
                 array.map { element in
                     self.convertToLibraryModel(element: element)
                 }
@@ -26,16 +26,16 @@ class NetworkService {
             .eraseToAnyPublisher()
     }
     
-    func uploadPhoto(name: String, id: Int, imageName: String, image: Data) -> Future<Bool, AFError> {
+    func uploadPhoto(name: String, id: Int, imageName: String, image: Data) -> AnyPublisher<Data, AFError> {
         let request = UploadPhotoRequest(name: name, typeId: id, imageName: imageName, photo: image)
         return manager.uploadPhoto(data: image, name: imageName, request: request)
     }
 }
 
 extension NetworkService {
-    private func convertToLibraryModel(element: Content) -> LibraryPhotoModel {
+    private func convertToLibraryModel(element: Content) -> PhotoTypeModel {
         let image = loadImage(urlString: element.image)
-        return LibraryPhotoModel(name: element.name, id: element.id, image: image)
+        return PhotoTypeModel(name: element.name, id: element.id, image: image)
     }
     
     private func loadImage(urlString: String?) -> UIImage? {

@@ -11,7 +11,7 @@ import Combine
 class LibraryTableView: UIView {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
-    var content: [[LibraryPhotoModel]] = []
+    var content: [[PhotoTypeModel]] = []
     var lastPage = CurrentValueSubject<Int,Never>(0)
     var selectedIndex = PassthroughSubject<[Int],Never>()
     
@@ -21,7 +21,7 @@ class LibraryTableView: UIView {
         setupTableView()
     }
     
-    func appendNew(content: [[LibraryPhotoModel]]) {
+    func appendNew(content: [[PhotoTypeModel]]) {
         self.content = content
         DispatchQueue.main.async {
             self.tableView.reloadData()

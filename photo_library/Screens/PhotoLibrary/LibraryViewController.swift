@@ -23,15 +23,15 @@ class LibraryViewController: UIViewController {
     /// Добавление всех подписчиков
     private func addObservers() {
         onParseContent()
-        onNextpage()
+        onNextPageScroll()
         onError()
-        onTapCell()
+        onCellTap()
         onPickImage()
     }
     
     /// Подписка на добавление новых страниц с фотографиями
     private func onParseContent() {
-        viewModel.content
+        viewModel.photoTypes
             .sink { content in
                 self.libraryTableView.appendNew(content: content)
             }
@@ -39,7 +39,7 @@ class LibraryViewController: UIViewController {
     }
     
     /// Подписка на загрузку новой страницы
-    private func onNextpage() {
+    private func onNextPageScroll() {
         libraryTableView.lastPage
             .sink { _ in
                 self.viewModel.loadNextPage()
@@ -56,10 +56,10 @@ class LibraryViewController: UIViewController {
             .store(in: &subscriber)
     }
     
-    private func onTapCell() {
+    private func onCellTap() {
         libraryTableView.selectedIndex
             .sink { indeces in
-                self.viewModel.selectedTypeIndex = indeces
+                self.viewModel.selectedIndex = indeces
                 self.present(self.picker.controller, animated: true)
             }
             .store(in: &subscriber)

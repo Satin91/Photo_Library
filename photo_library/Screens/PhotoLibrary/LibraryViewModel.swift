@@ -11,11 +11,11 @@ import UIKit
 
 class LibraryViewModel {
     let networkService = NetworkService()
-    var content = CurrentValueSubject<[[LibraryPhotoModel]], Never>([])
+    var photoTypes = CurrentValueSubject<[[PhotoTypeModel]], Never>([])
     var error = PassthroughSubject<Error, Never>()
     var subscriber = Set<AnyCancellable>()
     var pageForLoad: Int = 0
-    var selectedTypeIndex: [Int] = []
+    var selectedIndex: [Int] = []
     
     init() {
         getPhotoTypes()
@@ -26,8 +26,8 @@ class LibraryViewModel {
         getPhotoTypes()
     }
     
-    func uploadPhoto(photo: PickerModel) {
-        let selectedType = content.value[selectedTypeIndex]
+    func uploadPhoto(photo: PhotoUploadModel) {
+        let selectedType = photoTypes.value[selectedIndex]
         networkService.uploadPhoto(name: "Кулик Артур Сергеевич", id: selectedType.id, imageName: photo.imageName, image: photo.image)
             .sink { completion in
                 switch completion {
@@ -37,14 +37,14 @@ class LibraryViewModel {
                     break
                 }
             } receiveValue: { [self] success in
-                content.value[selectedTypeIndex].image = UIImage(data: photo.image)
+                photoTypes.value[selectedIndex].image = UIImage(data: photo.image)
             }
             .store(in: &subscriber)
 
     }
     
     private func getPhotoTypes() {
-        networkService.loadPhotos(page: pageForLoad)
+        networkService.loadPhotoTypes(from: pageForLoad)
             .sink { completion in
                 switch completion {
                 case .failure(let error):
@@ -53,7 +53,7 @@ class LibraryViewModel {
                     break
                 }
             } receiveValue: { photos in
-                self.content.value.append(photos)
+                self.photoTypes.value.append(photos)
             }
             .store(in: &subscriber)
     }
