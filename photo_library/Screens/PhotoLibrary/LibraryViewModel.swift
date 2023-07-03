@@ -27,11 +27,9 @@ class LibraryViewModel {
         getPhotoTypes()
     }
     
-    func uploadPhoto(image: UIImage) {
-        let image = UIImage(named: "placeholder")!
-        let imageData = image.jpegData(compressionQuality: 0.2)!
+    func uploadPhoto(photo: PickerModel) {
         let selectedType = content.value[selectedTypeIndex[0]][selectedTypeIndex[1]]
-        sendPhotoService.uploadPhoto(name: "Кулик Артур Сергеевич", id: selectedType.id, imageName: "", photo: imageData)
+        sendPhotoService.uploadPhoto(name: "Кулик Артур Сергеевич", id: selectedType.id, imageName: photo.imageName, image: photo.image)
     }
     
     private func getPhotoTypes() {

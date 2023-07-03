@@ -12,3 +12,8 @@ struct LibraryPhotoModel {
     var id: Int
     var image: UIImage?
 }
+
+struct PickerModel {
+    var image: Data
+    var imageName: String
+}

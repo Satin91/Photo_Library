@@ -14,8 +14,8 @@ class UploadPhotoTypeNetworkService {
     
     
     
-    func uploadPhoto(name: String, id: Int, imageName: String, photo: Data) {
-        let request = UploadPhotoRequest(name: name, typeId: id, imageName: imageName, photo: photo)
-        manager.uploadPhoto(data: photo, request: request)
+    func uploadPhoto(name: String, id: Int, imageName: String, image: Data) {
+        let request = UploadPhotoRequest(name: name, typeId: id, imageName: imageName, photo: image)
+        manager.uploadPhoto(data: image, request: request)
     }
 }

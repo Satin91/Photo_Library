@@ -22,14 +22,15 @@ class LibraryViewController: UIViewController {
     
     /// Добавление всех подписчиков
     private func addObservers() {
-        subscribeOnParseContent()
-        subscribeOnNextpage()
-        subscribeOnError()
-        subscribeToCellTap()
+        onParseContent()
+        onNextpage()
+        onError()
+        onTapCell()
+        onPickImage()
     }
     
     /// Подписка на добавление новых страниц с фотографиями
-    private func subscribeOnParseContent() {
+    private func onParseContent() {
         viewModel.content
             .sink { content in
                 self.libraryTableView.appendNew(content: content)
@@ -38,7 +39,7 @@ class LibraryViewController: UIViewController {
     }
     
     /// Подписка на загрузку новой страницы
-    private func subscribeOnNextpage() {
+    private func onNextpage() {
         libraryTableView.lastPage
             .sink { _ in
                 self.viewModel.loadNextPage()
@@ -47,29 +48,32 @@ class LibraryViewController: UIViewController {
     }
     
     /// Подписка на присутствие ошибки
-    private func subscribeOnError() {
-        viewModel.error.sink { error in
-            self.showAlert(title: "Error", message: error.localizedDescription)
-        }
-        .store(in: &subscriber)
+    private func onError() {
+        viewModel.error
+            .sink { error in
+                self.showAlert(title: "Error", message: error.localizedDescription)
+            }
+            .store(in: &subscriber)
     }
     
-    private func subscribeToCellTap() {
+    private func onTapCell() {
         libraryTableView.selectedIndex
             .sink { indeces in
+                self.viewModel.selectedTypeIndex = indeces
                 self.present(self.picker.pickerController, animated: true)
             }
             .store(in: &subscriber)
     }
     
-    private func subscribeToPickerImage() {
-        libraryTableView.selectedIndex
-            .sink { image in
-                viewModel.uploadPhoto()
+    private func onPickImage() {
+        picker.selectedImage
+            .sink { photo in
+                print(photo)
+                self.viewModel.uploadPhoto(photo: photo)
             }
             .store(in: &subscriber)
     }
-
+    
     private func setupView() {
         view.addSubview(libraryTableView)
         libraryTableView.frame = self.view.bounds
