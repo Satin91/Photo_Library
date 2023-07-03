@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-class ImagePickerManager: NSObject {
+class ImagePicker: NSObject {
     let controller = UIImagePickerController()
     var selectedImage = PassthroughSubject<PhotoUploadModel, Never>()
     
@@ -18,7 +18,7 @@ class ImagePickerManager: NSObject {
     }
 }
 
-extension ImagePickerManager: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+extension ImagePicker: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as! UIImage
         let imagePath = info[UIImagePickerController.InfoKey.imageURL] as! URL

@@ -11,7 +11,7 @@ import Combine
 class LibraryViewController: UIViewController {
     let viewModel = LibraryViewModel()
     let libraryTableView = LibraryTableView(frame: .zero)
-    let picker = ImagePickerManager()
+    let imagePicker = ImagePicker()
     var subscriber = Set<AnyCancellable>()
     
     override func viewDidLoad() {
@@ -29,7 +29,7 @@ class LibraryViewController: UIViewController {
         onPickImage()
     }
     
-    /// Подписка на добавление новых страниц с фотографиями
+    /// Добавление новых страниц с фотографиями
     private func onParseContent() {
         viewModel.photoTypes
             .sink { content in
@@ -38,7 +38,7 @@ class LibraryViewController: UIViewController {
             .store(in: &subscriber)
     }
     
-    /// Подписка на загрузку новой страницы
+    /// Запрос загрузки новой страницы
     private func onNextPageScroll() {
         libraryTableView.lastPage
             .sink { _ in
@@ -47,7 +47,7 @@ class LibraryViewController: UIViewController {
             .store(in: &subscriber)
     }
     
-    /// Подписка на присутствие ошибки
+    /// Вывод ошибки по требованию
     private func onError() {
         viewModel.error
             .sink { error in
@@ -56,17 +56,19 @@ class LibraryViewController: UIViewController {
             .store(in: &subscriber)
     }
     
+    /// При нажатии на ячейку
     private func onCellTap() {
         libraryTableView.selectedIndex
             .sink { indeces in
                 self.viewModel.selectedIndex = indeces
-                self.present(self.picker.controller, animated: true)
+                self.present(self.imagePicker.controller, animated: true)
             }
             .store(in: &subscriber)
     }
     
+    /// При выборе фотографии
     private func onPickImage() {
-        picker.selectedImage
+        imagePicker.selectedImage
             .sink { photo in
                 self.viewModel.uploadPhoto(photo: photo)
             }

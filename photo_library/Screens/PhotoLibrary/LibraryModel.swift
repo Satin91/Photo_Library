@@ -7,12 +7,14 @@
 
 import UIKit
 
+/// Модель, которая работает в UI
 struct PhotoTypeModel {
     var name: String
     var id: Int
     var image: UIImage?
 }
 
+/// Модель фотографии для отправки
 struct PhotoUploadModel {
     var image: Data
     var imageName: String

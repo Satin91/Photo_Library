@@ -11,7 +11,7 @@ import Combine
 class LibraryTableView: UIView {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
-    var content: [[PhotoTypeModel]] = []
+    var photoTypes: [[PhotoTypeModel]] = []
     var lastPage = CurrentValueSubject<Int,Never>(0)
     var selectedIndex = PassthroughSubject<[Int],Never>()
     
@@ -22,14 +22,10 @@ class LibraryTableView: UIView {
     }
     
     func appendNew(content: [[PhotoTypeModel]]) {
-        self.content = content
+        self.photoTypes = content
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
-    }
-    
-    func reloadPhotos() {
-        tableView.reloadData()
     }
     
     private func addSubViews() {
@@ -55,18 +51,18 @@ class LibraryTableView: UIView {
 
 extension LibraryTableView: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        content.count
+        photoTypes.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return content[section].count
+        return photoTypes[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! LibraryTableViewCell
-        let image = content[indexPath.section][indexPath.row].image
-        let name = content[indexPath.section][indexPath.row].name
-        let id = content[indexPath.section][indexPath.row].id
+        let image = photoTypes[indexPath.section][indexPath.row].image
+        let name = photoTypes[indexPath.section][indexPath.row].name
+        let id = photoTypes[indexPath.section][indexPath.row].id
         cell.configure(name: name, id: id, image: image)
         return cell
     }
@@ -76,7 +72,7 @@ extension LibraryTableView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row + 1 == content[indexPath.section].count && indexPath.section + 1 == content.count {
+        if indexPath.row + 1 == photoTypes[indexPath.section].count && indexPath.section + 1 == photoTypes.count {
             lastPage.send(indexPath.section + 1)
         }
     }

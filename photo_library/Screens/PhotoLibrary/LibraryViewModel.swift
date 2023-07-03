@@ -21,11 +21,29 @@ class LibraryViewModel {
         getPhotoTypes()
     }
     
+    /// Запрос на загрузку фотографий
+    private func getPhotoTypes() {
+        networkService.loadPhotoTypes(from: pageForLoad)
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    self.error.send(error)
+                case .finished:
+                    break
+                }
+            } receiveValue: { photos in
+                self.photoTypes.value.append(photos)
+            }
+            .store(in: &subscriber)
+    }
+    
+    /// Запрос на загрузку фотографий со следующей страницы ( происходит при скроле )
     func loadNextPage() {
         pageForLoad += 1
         getPhotoTypes()
     }
     
+    /// Загрузка выбранной фотографии на сервер
     func uploadPhoto(photo: PhotoUploadModel) {
         let selectedType = photoTypes.value[selectedIndex]
         networkService.uploadPhoto(name: "Кулик Артур Сергеевич", id: selectedType.id, imageName: photo.imageName, image: photo.image)
@@ -41,20 +59,5 @@ class LibraryViewModel {
             }
             .store(in: &subscriber)
 
-    }
-    
-    private func getPhotoTypes() {
-        networkService.loadPhotoTypes(from: pageForLoad)
-            .sink { completion in
-                switch completion {
-                case .failure(let error):
-                    self.error.send(error)
-                case .finished:
-                    break
-                }
-            } receiveValue: { photos in
-                self.photoTypes.value.append(photos)
-            }
-            .store(in: &subscriber)
     }
 }
