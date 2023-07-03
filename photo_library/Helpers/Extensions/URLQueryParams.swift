@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Расширения для удобства добавления параметров к URL адресу
 protocol URLQueryParameterStringConvertible {
     var queryParameters: String { get }
 }

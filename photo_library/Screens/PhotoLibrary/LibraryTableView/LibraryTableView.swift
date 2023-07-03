@@ -8,11 +8,15 @@
 import UIKit
 import Combine
 
+/// Представление которое содержит список типов фотографий. Так же выступает в роли его делегата
 class LibraryTableView: UIView {
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     
     var photoTypes: [[PhotoTypeModel]] = []
-    var lastPage = CurrentValueSubject<Int,Never>(0)
+    
+    /// Отправляет в контроллер сигнал о смене страницы
+    var pageChanged = CurrentValueSubject<Int,Never>(0)
+    /// Отправляет в контроллер сигнал о нажатии на ячейку
     var selectedIndex = PassthroughSubject<[Int],Never>()
     
     override init(frame: CGRect) {
@@ -73,7 +77,7 @@ extension LibraryTableView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if indexPath.row + 1 == photoTypes[indexPath.section].count && indexPath.section + 1 == photoTypes.count {
-            lastPage.send(indexPath.section + 1)
+            pageChanged.send(indexPath.section + 1)
         }
     }
 }

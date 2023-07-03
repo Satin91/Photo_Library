@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Расширение для поиска элемента многомерного массива с массивом в качестве параметра
 extension Array where Element : MutableCollection, Index == Element.Index{
     subscript(_ indeces: [Int]) -> Element.Element {
         get { return self[indeces[0]][indeces[1]] }

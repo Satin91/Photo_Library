@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 
+/// Запрос на отправку фотографий на сервер
 struct UploadPhotoRequest: NetworkRequestProtocol {
     
     var parameters: [String: String]
@@ -21,6 +22,7 @@ struct UploadPhotoRequest: NetworkRequestProtocol {
         header = ["Content-Type": "multipart/form-data"]
     }
     
+    /// Обязательный метода протокола
     func make() -> RequestModel {
         let headers = header.merging(header) { $1 }
         return RequestModel(path: .uploadPhoto, parameters: parameters, headers: HTTPHeaders(headers), method: .post)

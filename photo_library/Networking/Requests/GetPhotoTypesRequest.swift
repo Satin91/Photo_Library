@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 
+/// Запрос на получение типов фотографий
 struct GetPhotoTypesRequest: NetworkRequestProtocol {
     
     var parameters: [String: String]
@@ -18,6 +19,7 @@ struct GetPhotoTypesRequest: NetworkRequestProtocol {
         header = ["Accept": "*/*"]
     }
     
+    /// Обязательный метод протокола
     func make() -> RequestModel {
         let headers = header.merging(header) { $1 }
         return RequestModel(path: .getPhotoTypes, parameters: parameters, headers: HTTPHeaders(headers), method: .get)

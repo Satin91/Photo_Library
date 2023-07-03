@@ -26,12 +26,15 @@ class NetworkService {
             .eraseToAnyPublisher()
     }
     
-    func uploadPhoto(name: String, id: Int, imageName: String, image: Data) -> AnyPublisher<Data, AFError> {
+    func uploadPhoto(name: String, id: Int, imageName: String, image: Data) -> AnyPublisher<UploadPhotoResponse, Error> {
         let request = UploadPhotoRequest(name: name, typeId: id, imageName: imageName, photo: image)
         return manager.uploadPhoto(data: image, name: imageName, request: request)
+            .decode(type: UploadPhotoResponse.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
     }
 }
 
+/// Расширение сервиса с сетодами, которые трансформируют Content элементы в понятные для UI модели
 extension NetworkService {
     private func convertToLibraryModel(element: Content) -> PhotoTypeModel {
         let image = loadImage(urlString: element.image)

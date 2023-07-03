@@ -8,6 +8,9 @@
 import UIKit
 import Combine
 
+/* Главный и единственный контроллер, который содержит свою функциональную модель,
+ список типов фотографий, выбор фотографий, а так же их методы выраженными издателями
+ */
 class LibraryViewController: UIViewController {
     let viewModel = LibraryViewModel()
     let libraryTableView = LibraryTableView(frame: .zero)
@@ -40,7 +43,7 @@ class LibraryViewController: UIViewController {
     
     /// Запрос загрузки новой страницы
     private func onNextPageScroll() {
-        libraryTableView.lastPage
+        libraryTableView.pageChanged
             .sink { _ in
                 self.viewModel.loadNextPage()
             }

@@ -10,13 +10,13 @@ import Foundation
 import Foundation
 import Alamofire
 
-// Протокол, который должны реализовать все объекты запросов.
-// Запросы создаются отдельно и инициализируют обязательные свойства структуры RequestModel
+/// Протокол, который должны реализовать все объекты запросов
+/// Запросы создаются отдельно и инициализируют обязательные свойства структуры RequestModel
 protocol NetworkRequestProtocol {
     func make() -> RequestModel
 }
 
-// рeaders, baseURL, encoding,  объявлены геттерами для улучшения читаемости. В реальном проекте, они были бы обычными глобальными свойствами.
+
 struct RequestModel {
     var path: String
     var body: [String : Any]?

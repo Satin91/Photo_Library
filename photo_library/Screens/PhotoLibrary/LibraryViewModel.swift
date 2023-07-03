@@ -37,13 +37,13 @@ class LibraryViewModel {
             .store(in: &subscriber)
     }
     
-    /// Запрос на загрузку фотографий со следующей страницы ( происходит при скроле )
+    /// Запрос на загрузку фотографий со следующей страницы ( запускается при прокрутке )
     func loadNextPage() {
         pageForLoad += 1
         getPhotoTypes()
     }
     
-    /// Загрузка выбранной фотографии на сервер
+    /// Загрузка выбранной фотографии на сервер и, при успешной загрузке, смена фотографии в выбранной ячейке
     func uploadPhoto(photo: PhotoUploadModel) {
         let selectedType = photoTypes.value[selectedIndex]
         networkService.uploadPhoto(name: "Кулик Артур Сергеевич", id: selectedType.id, imageName: photo.imageName, image: photo.image)
@@ -54,7 +54,7 @@ class LibraryViewModel {
                 case .finished:
                     break
                 }
-            } receiveValue: { [self] success in
+            } receiveValue: { [self] response in
                 photoTypes.value[selectedIndex].image = UIImage(data: photo.image)
             }
             .store(in: &subscriber)

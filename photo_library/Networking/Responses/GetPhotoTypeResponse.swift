@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Модель для декодирования ответа получения типов фотографий
 struct GetPhotoTypeResponse: Decodable {
     let page, pageSize, totalPages, totalElements: Int
     let content: [Content]
