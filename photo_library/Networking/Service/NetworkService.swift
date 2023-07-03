@@ -34,7 +34,7 @@ class NetworkService {
     }
 }
 
-/// Расширение сервиса с сетодами, которые трансформируют Content элементы в понятные для UI модели
+/// Расширение сервиса с методами, которые трансформируют Content элементы в понятные для UI модели
 extension NetworkService {
     private func convertToLibraryModel(element: Content) -> PhotoTypeModel {
         let image = loadImage(urlString: element.image)
