@@ -54,7 +54,7 @@ class LibraryViewModel {
                 case .finished:
                     break
                 }
-            } receiveValue: { [self] response in
+            } receiveValue: { [self] _ in
                 photoTypes.value[selectedIndex].image = UIImage(data: photo.image)
             }
             .store(in: &subscriber)
