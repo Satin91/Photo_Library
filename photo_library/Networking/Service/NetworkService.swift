@@ -26,6 +26,13 @@ class NetworkService {
             .eraseToAnyPublisher()
     }
     
+    func uploadPhoto(name: String, id: Int, imageName: String, image: Data) -> Future<Bool, AFError> {
+        let request = UploadPhotoRequest(name: name, typeId: id, imageName: imageName, photo: image)
+        return manager.uploadPhoto(data: image, name: imageName, request: request)
+    }
+}
+
+extension NetworkService {
     private func convertToLibraryModel(element: Content) -> LibraryPhotoModel {
         let image = loadImage(urlString: element.image)
         return LibraryPhotoModel(name: element.name, id: element.id, image: image)
@@ -37,10 +44,5 @@ class NetworkService {
         }
         let imageData = try? Data(contentsOf: url)
         return UIImage(data: imageData ?? Data())
-    }
-    
-    func uploadPhoto(name: String, id: Int, imageName: String, image: Data) -> Future<Bool, AFError> {
-        let request = UploadPhotoRequest(name: name, typeId: id, imageName: imageName, photo: image)
-        return manager.uploadPhoto(data: image, name: imageName, request: request)
     }
 }

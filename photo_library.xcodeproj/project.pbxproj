@@ -28,7 +28,7 @@
 		8EDFCD832A50578500B21599 /* NetworkComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDFCD822A50578500B21599 /* NetworkComponents.swift */; };
 		8EDFCD862A50725500B21599 /* URLQueryParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDFCD852A50725500B21599 /* URLQueryParams.swift */; };
 		8EDFCD892A5072EC00B21599 /* GetPhotoTypesRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDFCD882A5072EC00B21599 /* GetPhotoTypesRequest.swift */; };
-		8EDFCD8C2A5075BA00B21599 /* GetPhotoTypesNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDFCD8B2A5075BA00B21599 /* GetPhotoTypesNetworkService.swift */; };
+		8EDFCD8C2A5075BA00B21599 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDFCD8B2A5075BA00B21599 /* NetworkService.swift */; };
 		8EDFCD8F2A5078B900B21599 /* GetPhotoTypeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EDFCD8E2A5078B900B21599 /* GetPhotoTypeResponse.swift */; };
 		8EF31F422A52CB0100ACAA00 /* UploadPhotoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF31F412A52CB0100ACAA00 /* UploadPhotoRequest.swift */; };
 		8EF31F472A52D65300ACAA00 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 8EF31F462A52D65300ACAA00 /* Alamofire */; };
@@ -58,7 +58,7 @@
 		8EDFCD822A50578500B21599 /* NetworkComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkComponents.swift; sourceTree = "<group>"; };
 		8EDFCD852A50725500B21599 /* URLQueryParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLQueryParams.swift; sourceTree = "<group>"; };
 		8EDFCD882A5072EC00B21599 /* GetPhotoTypesRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoTypesRequest.swift; sourceTree = "<group>"; };
-		8EDFCD8B2A5075BA00B21599 /* GetPhotoTypesNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoTypesNetworkService.swift; sourceTree = "<group>"; };
+		8EDFCD8B2A5075BA00B21599 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		8EDFCD8E2A5078B900B21599 /* GetPhotoTypeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetPhotoTypeResponse.swift; sourceTree = "<group>"; };
 		8EF31F412A52CB0100ACAA00 /* UploadPhotoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadPhotoRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -173,7 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				8EDFCD792A5042D600B21599 /* Manager */,
-				8EDFCD8A2A50759900B21599 /* Services */,
+				8EDFCD8A2A50759900B21599 /* Service */,
 				8E04E5642A519A66009CBCF2 /* Errors */,
 				8EDFCD7A2A50430B00B21599 /* RequestModel */,
 				8EDFCD872A5072CB00B21599 /* Requests */,
@@ -227,12 +227,12 @@
 			path = Requests;
 			sourceTree = "<group>";
 		};
-		8EDFCD8A2A50759900B21599 /* Services */ = {
+		8EDFCD8A2A50759900B21599 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				8EDFCD8B2A5075BA00B21599 /* GetPhotoTypesNetworkService.swift */,
+				8EDFCD8B2A5075BA00B21599 /* NetworkService.swift */,
 			);
-			path = Services;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		8EDFCD8D2A5078A600B21599 /* Responses */ = {
@@ -339,7 +339,7 @@
 				8EDFCD5A2A4FF7BD00B21599 /* SceneDelegate.swift in Sources */,
 				8EDFCD862A50725500B21599 /* URLQueryParams.swift in Sources */,
 				8EDFCD812A5056B700B21599 /* Endpoint.swift in Sources */,
-				8EDFCD8C2A5075BA00B21599 /* GetPhotoTypesNetworkService.swift in Sources */,
+				8EDFCD8C2A5075BA00B21599 /* NetworkService.swift in Sources */,
 				8EDFCD7F2A5056AC00B21599 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
