@@ -16,10 +16,10 @@ class LibraryViewModel {
     var error = PassthroughSubject<Error, Never>()
     var subscriber = Set<AnyCancellable>()
     var pageForLoad: Int = 0
+    var selectedTypeIndex: [Int] = []
     
     init() {
         getPhotoTypes()
-        uploadPhoto()
     }
     
     func loadNextPage() {
@@ -27,10 +27,11 @@ class LibraryViewModel {
         getPhotoTypes()
     }
     
-    func uploadPhoto() {
+    func uploadPhoto(image: UIImage) {
         let image = UIImage(named: "placeholder")!
         let imageData = image.jpegData(compressionQuality: 0.2)!
-        sendPhotoService.uploadPhoto(name: "some_name", id: 26, imageName: "", photo: imageData)
+        let selectedType = content.value[selectedTypeIndex[0]][selectedTypeIndex[1]]
+        sendPhotoService.uploadPhoto(name: "Кулик Артур Сергеевич", id: selectedType.id, imageName: "", photo: imageData)
     }
     
     private func getPhotoTypes() {

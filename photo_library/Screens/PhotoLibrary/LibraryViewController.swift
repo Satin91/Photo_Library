@@ -25,7 +25,7 @@ class LibraryViewController: UIViewController {
         subscribeOnParseContent()
         subscribeOnNextpage()
         subscribeOnError()
-        subscribeToTypeTap()
+        subscribeToCellTap()
     }
     
     /// Подписка на добавление новых страниц с фотографиями
@@ -54,7 +54,7 @@ class LibraryViewController: UIViewController {
         .store(in: &subscriber)
     }
     
-    private func subscribeToTypeTap() {
+    private func subscribeToCellTap() {
         libraryTableView.selectedIndex
             .sink { indeces in
                 self.present(self.picker.pickerController, animated: true)
@@ -62,7 +62,13 @@ class LibraryViewController: UIViewController {
             .store(in: &subscriber)
     }
     
-    
+    private func subscribeToPickerImage() {
+        libraryTableView.selectedIndex
+            .sink { image in
+                viewModel.uploadPhoto()
+            }
+            .store(in: &subscriber)
+    }
 
     private func setupView() {
         view.addSubview(libraryTableView)

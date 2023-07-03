@@ -10,6 +10,7 @@ import Combine
 
 class ImagePickerManager: NSObject {
     let pickerController = UIImagePickerController()
+    var selectedImage = PassthroughSubject<UIImage, Never>()
     
     override init() {
         super.init()
@@ -19,6 +20,7 @@ class ImagePickerManager: NSObject {
 
 extension ImagePickerManager: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
+        let image = info[.originalImage] as! UIImage
+        selectedImage.send(image)
     }
 }
