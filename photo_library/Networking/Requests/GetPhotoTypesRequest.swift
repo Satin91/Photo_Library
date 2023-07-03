@@ -6,15 +6,21 @@
 //
 
 import Foundation
+import Alamofire
 
-struct GetPhotoTypesRequest: RequestModel {
-    var method: HTTPMethod
-    var url: URL
-    var params: [String : String]
+struct GetPhotoTypesRequest: NetworkRequestProtocol {
+    
+    var parameters: [String: String]
+    var header: [String: String]
     
     init(page: Int) {
-        params = ["page": String(page)]
-        url = URL(string: Constats.API.libraryHost + Endpoint.getPhotoTypes.rawValue)!.appendingQueryParameters(params)
-        method = .get
+        parameters = ["page": String(page)]
+        header = ["Accept": "*/*"]
+    }
+    
+    func make() -> RequestModel {
+        let path = Endpoint.getPhotoTypes.rawValue.appendingQueryParameters(parameters)
+        let headers = header.merging(header) { $1 }
+        return RequestModel(path: path, headers: HTTPHeaders(headers), method: .get)
     }
 }

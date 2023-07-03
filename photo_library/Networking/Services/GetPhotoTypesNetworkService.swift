@@ -7,13 +7,14 @@
 
 import UIKit
 import Combine
+import Alamofire
 
-class PhotoNetworkService {
+class GetPhotoTypesNetworkService {
     private let manager = NetworkManager()
     private var subscriber = Set<AnyCancellable>()
     
     func loadPhotos(page: Int) -> AnyPublisher<[LibraryPhotoModel], Error> {
-        let request = GetPhotoTypesRequest(page: page).make()
+        let request = GetPhotoTypesRequest(page: page)
         return manager.sendRequest(request: request)
             .decode(type: GetPhotoTypeResponse.self, decoder: JSONDecoder())
             .map { $0.content }

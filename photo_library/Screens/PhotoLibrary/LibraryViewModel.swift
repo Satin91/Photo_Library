@@ -7,9 +7,11 @@
 
 import Foundation
 import Combine
+import UIKit
 
 class LibraryViewModel {
-    let photoNetworkSerivce = PhotoNetworkService()
+    let photoNetworkSerivce = GetPhotoTypesNetworkService()
+    let sendPhotoService = UploadPhotoTypeNetworkService()
     var content = CurrentValueSubject<[[LibraryPhotoModel]], Never>([])
     var error = PassthroughSubject<Error, Never>()
     var subscriber = Set<AnyCancellable>()
@@ -17,6 +19,9 @@ class LibraryViewModel {
     
     init() {
         getPhotoTypes()
+        let image = UIImage(named: "placeholder")!
+        let data = image.jpegData(compressionQuality: 1)!
+//        sendPhotoService.uploadPhoto(name: "name", id: 26, photo: data)
     }
     
     func loadNextPage() {

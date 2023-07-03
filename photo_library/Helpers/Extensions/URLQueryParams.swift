@@ -26,9 +26,9 @@ extension Dictionary: URLQueryParameterStringConvertible {
     }
 }
 
-extension URL {
-    func appendingQueryParameters(_ parametersDictionary: [String: String]) -> URL {
-        let URLString = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
-        return URL(string: URLString)!
+extension String {
+    func appendingQueryParameters(_ parametersDictionary: [String: String]) -> String {
+        let URLString = String(format: "%@?%@", self, parametersDictionary.queryParameters)
+        return URLString
     }
 }

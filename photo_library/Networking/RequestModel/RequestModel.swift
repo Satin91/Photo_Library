@@ -7,18 +7,33 @@
 
 import Foundation
 
-protocol RequestModel {
-    var url: URL { get set }
-    var method: HTTPMethod { get set }
-    var params: [String: String] { get set }
-    
+import Foundation
+import Alamofire
+
+// Протокол, который должны реализовать все объекты запросов.
+// Запросы создаются отдельно и инициализируют обязательные свойства структуры RequestModel
+protocol NetworkRequestProtocol {
+    func make() -> RequestModel
 }
 
-extension RequestModel {
-    func make() -> URLRequest {
-        var request = URLRequest(url: url)
-        request.httpMethod = method.rawValue
-        request.addValue("*/*", forHTTPHeaderField: "Accept")
-        return request
+// рeaders, baseURL, encoding,  объявлены геттерами для улучшения читаемости. В реальном проекте, они были бы обычными глобальными свойствами.
+struct RequestModel {
+    var path: String
+    var parameters: [String : Any]?
+    var method: Alamofire.HTTPMethod
+    var headers: HTTPHeaders
+    
+    var baseUrl: String {
+        Constats.API.libraryHost
+    }
+    var encoding: ParameterEncoding {
+        JSONEncoding.default
+    }
+    
+    init(path: String, parameters: [String: Any]? = nil, headers: HTTPHeaders = HTTPHeaders(), method: Alamofire.HTTPMethod = .get) {
+        self.path = path
+        self.parameters = parameters
+        self.method = method
+        self.headers = headers
     }
 }
